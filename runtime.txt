@@ -1,1 +1,1 @@
-python-3.13[_{{{CITATION{{{_1{Heroku Python Support Reference | Heroku Dev Center](https://devcenter.heroku.com/articles/python-support)
+python-3.13
