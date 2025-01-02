@@ -7,15 +7,8 @@ app = Flask(__name__)
 A, B = 0, 0
 ANGLE_INCREMENT_A = float(os.getenv('ANGLE_INCREMENT_A', 0.1))
 ANGLE_INCREMENT_B = float(os.getenv('ANGLE_INCREMENT_B', 0.05))
-FOREGROUND_COLOR = os.getenv('FOREGROUND_COLOR', '\u001b[37m')  # Default to white
-BACKGROUND_COLOR = os.getenv('BACKGROUND_COLOR', '\u001b[40m')  # Default to black
-RESET_COLOR = '\u001b[0m'
-
-# Debug prints
-print(f"ANGLE_INCREMENT_A: {ANGLE_INCREMENT_A}")
-print(f"ANGLE_INCREMENT_B: {ANGLE_INCREMENT_B}")
-print(f"FOREGROUND_COLOR: {FOREGROUND_COLOR}")
-print(f"BACKGROUND_COLOR: {BACKGROUND_COLOR}")
+FOREGROUND_COLOR = os.getenv('FOREGROUND_COLOR', 'red')  # Default to red
+BACKGROUND_COLOR = os.getenv('BACKGROUND_COLOR', 'black')  # Default to black
 
 def render_frame(A, B):
     output = [[' ' for _ in range(80)] for _ in range(22)]
@@ -42,9 +35,9 @@ def render_frame(A, B):
                     zbuffer[y][x] = z
                     luminance_index = int(8 * ((cos_j * cos_i * sin_B - cos_j * sin_i * sin_A - sin_j * cos_A * cos_i * sin_B - sin_j * sin_A * sin_i * cos_B) + 5))
                     luminance_index = max(0, min(11, luminance_index))  # Ensure the index is within range
-                    output[y][x] = ".,-~:;=!*#$@"[luminance_index]
+                    output[y][x] = f"<span style='color:{FOREGROUND_COLOR};background:{BACKGROUND_COLOR};'>.,-~:;=!*#$@</span>"[luminance_index]
 
-    frame = "\n".join("".join(FOREGROUND_COLOR + BACKGROUND_COLOR + char + RESET_COLOR for char in row) for row in output)
+    frame = "\n".join("".join(row) for row in output)
     return frame
 
 @app.route('/')
@@ -67,7 +60,7 @@ def index():
                 var B = 0;
                 function updateDonut() {
                     fetch('/frame').then(response => response.text()).then(data => {
-                        document.getElementById('donut').innerText = data;
+                        document.getElementById('donut').innerHTML = data;
                     });
                     A += {{ angle_increment_a }};
                     B += {{ angle_increment_b }};
