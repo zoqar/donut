@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir flask
 EXPOSE 80
 
 # Define environment variables
-ENV FOREGROUND_COLOR="red"  # Red color
-ENV BACKGROUND_COLOR="black"  # Black background
+ENV FOREGROUND_COLOR="red"
+ENV BACKGROUND_COLOR="black"
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
