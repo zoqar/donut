@@ -11,6 +11,12 @@ FOREGROUND_COLOR = os.getenv('FOREGROUND_COLOR', '\u001b[37m')  # Default to whi
 BACKGROUND_COLOR = os.getenv('BACKGROUND_COLOR', '\u001b[40m')  # Default to black
 RESET_COLOR = '\u001b[0m'
 
+# Debug prints
+print(f"ANGLE_INCREMENT_A: {ANGLE_INCREMENT_A}")
+print(f"ANGLE_INCREMENT_B: {ANGLE_INCREMENT_B}")
+print(f"FOREGROUND_COLOR: {FOREGROUND_COLOR}")
+print(f"BACKGROUND_COLOR: {BACKGROUND_COLOR}")
+
 def render_frame(A, B):
     output = [[' ' for _ in range(80)] for _ in range(22)]
     zbuffer = [[0 for _ in range(80)] for _ in range(22)]
