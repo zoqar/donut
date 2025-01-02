@@ -18,6 +18,9 @@ def render_frame(A, B):
     cos_B = np.cos(B)
     sin_B = np.sin(B)
 
+    print(f"Foreground color: {FOREGROUND_COLOR}")
+    print(f"Background color: {BACKGROUND_COLOR}")
+
     for j in np.arange(0, 6.28, 0.07):
         for i in np.arange(0, 6.28, 0.02):
             cos_i = np.cos(i)
@@ -38,6 +41,7 @@ def render_frame(A, B):
                     output[y][x] = f"<span style='color:{FOREGROUND_COLOR};background-color:{BACKGROUND_COLOR};'>.,-~:;=!*#$@</span>"[luminance_index]
 
     frame = "\n".join("".join(row) for row in output)
+    print(frame)
     return frame
 
 @app.route('/')
