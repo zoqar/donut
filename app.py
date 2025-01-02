@@ -1,9 +1,15 @@
+import os
 import numpy as np
 from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
 A, B = 0, 0
+ANGLE_INCREMENT_A = float(os.getenv('ANGLE_INCREMENT_A', 0.1))
+ANGLE_INCREMENT_B = float(os.getenv('ANGLE_INCREMENT_B', 0.05))
+FOREGROUND_COLOR = os.getenv('FOREGROUND_COLOR', '\u001b[37m')  # Default to white
+BACKGROUND_COLOR = os.getenv('BACKGROUND_COLOR', '\u001b[40m')  # Default to black
+RESET_COLOR = '\u001b[0m'
 
 def render_frame(A, B):
     output = [[' ' for _ in range(80)] for _ in range(22)]
@@ -32,7 +38,7 @@ def render_frame(A, B):
                     luminance_index = max(0, min(11, luminance_index))  # Ensure the index is within range
                     output[y][x] = ".,-~:;=!*#$@"[luminance_index]
 
-    frame = "\n".join("".join(row) for row in output)
+    frame = "\n".join("".join(FOREGROUND_COLOR + BACKGROUND_COLOR + char + RESET_COLOR for char in row) for row in output)
     return frame
 
 @app.route('/')
@@ -57,22 +63,22 @@ def index():
                     fetch('/frame').then(response => response.text()).then(data => {
                         document.getElementById('donut').innerText = data;
                     });
-                    A += 0.1;  // Increase the increment for faster rotation
-                    B += 0.05;  // Increase the increment for faster rotation
+                    A += {{ angle_increment_a }};
+                    B += {{ angle_increment_b }};
                 }
-                setInterval(updateDonut, 10);  // Reduce the delay to 10 milliseconds for smoother updates
-                updateDonut();  // Initial call to start the loop
+                setInterval(updateDonut, 10);
+                updateDonut();
             </script>
         </body>
         </html>
-    ''')
+    ''', angle_increment_a=ANGLE_INCREMENT_A, angle_increment_b=ANGLE_INCREMENT_B)
 
 @app.route('/frame')
 def frame():
     global A, B
     frame_data = render_frame(A, B)
-    A += 0.1  # Increase the increment for faster rotation
-    B += 0.05  # Increase the increment for faster rotation
+    A += ANGLE_INCREMENT_A
+    B += ANGLE_INCREMENT_B
     return frame_data
 
 if __name__ == '__main__':
