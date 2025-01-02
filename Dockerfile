@@ -16,8 +16,8 @@ EXPOSE 80
 # Define environment variables
 ENV ANGLE_INCREMENT_A=0.1
 ENV ANGLE_INCREMENT_B=0.05
-ENV FOREGROUND_COLOR="\u001b[31m"  # Red color
-ENV BACKGROUND_COLOR="\u001b[40m"  # Black background
+ENV FOREGROUND_COLOR="red"
+ENV BACKGROUND_COLOR="black"
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
